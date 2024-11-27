@@ -25,3 +25,13 @@ Real-world problem modeled using OOP principles.
 ## Technologies Used
 
 Programming Language: C++ 
+
+# Author
+
+Name: Youssef Hassan Fahmy Ahmed.
+
+E-Mail: yousefheroo028@gmail.com
+
+
+Student at Faculty of Computers and Artificial Intelligence in Cairo Universty.
+
