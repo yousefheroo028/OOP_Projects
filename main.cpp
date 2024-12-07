@@ -1,4 +1,4 @@
-#include "FourInARowBoard.h"
+#include "Connect_4.h"
 #include "BoardGame_Classes.h"
 #include <iostream>
 
