@@ -26,12 +26,23 @@ Real-world problem modeled using OOP principles.
 
 Programming Language: C++ 
 
-# Author
+# Parteners
 
 Name: Youssef Hassan Fahmy Ahmed.
 
 E-Mail: yousefheroo028@gmail.com
 
+Student at Faculty of Computers and Artificial Intelligence in Cairo Universty.
+
+Name: Mohammed Ahmed Sayed.
+
+E-Mail: melgayar466@gmail.com
+
+Student at Faculty of Computers and Artificial Intelligence in Cairo Universty.
+
+Name: Omar Nour-Eldin Ahmed Elmasri.
+
+E-Mail: 3omarmasri.official@gmail.com
 
 Student at Faculty of Computers and Artificial Intelligence in Cairo Universty.
 
