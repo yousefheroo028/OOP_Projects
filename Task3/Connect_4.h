@@ -35,6 +35,7 @@ public:
     }
 
     void display_board() override {
+        system("cls");
         for (int row = 0; row < this->rows; ++row) {
             for (int col = 0; col < this->columns; ++col) {
                 std::cout << grid[row][col] << " ";
