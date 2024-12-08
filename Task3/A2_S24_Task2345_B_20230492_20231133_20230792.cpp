@@ -1,4 +1,5 @@
 #include <iostream>
+#include <random>
 #include "Pyramid_Tic_Tac_Toe.h"
 #include "Word_Tic-Tac-Toe.h"
 #include "Inverted_X_O.h"
@@ -11,7 +12,6 @@ int main() {
     Board<char> *Board;
     while (true) {
         system("cls");
-
         cout << "Choose the game you want to play:\n"
                 "0. Exit\n"
                 "1. Pyramid Tic-Tac_Toe\n"
@@ -21,15 +21,14 @@ int main() {
                 "5. Numerical Tic-Tac-Toe\n"
                 "6. Misere Tic Tac Toe\n"
                 "7. 4x4 Tic-Tac-Toe\n"
-                "8. Ultimate Tic-Tac-Toe\n"
-                "9. SUS\n";
+                "8. Ultimate Tic-Tac-Toe\n";
         char gameOPT;
         char type;
         char symbol;
         cin >> gameOPT;
         while (gameOPT != '0' && gameOPT != '1' && gameOPT != '2' && gameOPT != '3' &&
                gameOPT != '4' && gameOPT != '5' && gameOPT != '6' &&
-               gameOPT != '7' && gameOPT != '8' && gameOPT != '9') {
+               gameOPT != '7' && gameOPT != '8') {
             cout << "Enter a valid input: ";
             cin.ignore();
             cin.clear();
@@ -40,9 +39,9 @@ int main() {
             case '0':
                 cout << "Thanks for choosing our games.";
                 cout << endl, system("pause");
-                delete Board;
-                delete players[0];
-                delete players[1];
+                free(Board);
+                free(players[0]);
+                free(players[1]);
                 return 0;
             case '1':
                 Board = new Pyramid_Board<char>();
@@ -63,6 +62,13 @@ int main() {
                         cout << player1 << ", choose the symbol (X or O): ";
                         cin >> symbol;
                         symbol = toupper(symbol);
+                        while (symbol != 'X' && symbol != 'O') {
+                            cin.ignore();
+                            cin.clear();
+                            cout << player1 << ", enter X or O: ";
+                            cin >> symbol;
+                            symbol = toupper(symbol);
+                        }
                         players[0] = new Pyramid_Player<char>(player1, symbol);
                         break;
                     case '2':
@@ -107,6 +113,13 @@ int main() {
                         cout << player1 << ", choose the symbol (X or O): ";
                         cin >> symbol;
                         symbol = toupper(symbol);
+                        while (symbol != 'X' && symbol != 'O') {
+                            cin.ignore();
+                            cin.clear();
+                            cout << player1 << ", enter X or O: ";
+                            cin >> symbol;
+                            symbol = toupper(symbol);
+                        }
                         players[0] = new HumanPlayer<char>(player1, symbol);
                         break;
                     case '2':
@@ -181,6 +194,13 @@ int main() {
                         cout << player1 << ", choose the symbol (X or O): ";
                         cin >> symbol;
                         symbol = toupper(symbol);
+                        while (symbol != 'X' && symbol != 'O') {
+                            cin.ignore();
+                            cin.clear();
+                            cout << player1 << ", enter X or O: ";
+                            cin >> symbol;
+                            symbol = toupper(symbol);
+                        }
                         players[1] = new Inverted_X_O_Player<char>(player1, symbol);
                         break;
                     case '2':
@@ -210,12 +230,13 @@ int main() {
             case '5':
             case '7':
             case '8':
-            case '9':
                 Board = nullptr;
                 cout << "In progress...";
                 break;
+            default:
+                break;
         }
-        if (Board != nullptr) {
+        if (Board != nullptr && players[0] != nullptr && players[1] != nullptr) {
             GameManager<char> Game(Board, players);
             Game.run();
         }
