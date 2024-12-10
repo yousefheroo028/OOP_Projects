@@ -34,7 +34,7 @@ E-Mail: yousefheroo028@gmail.com
 
 Student at Faculty of Computers and Artificial Intelligence in Cairo Universty.
 
-Name: Mohammed Ahmed Sayed.
+Name: Mohammed Ahmed Sayed El-gayar.
 
 E-Mail: melgayar466@gmail.com
 
