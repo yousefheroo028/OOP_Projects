@@ -6,6 +6,7 @@
 #include "Inverted_X_O.h"
 #include "Connect_4.h"
 #include "Ultimate_Tic_Tac_Toe.h"
+#include "numericalTicTacToe.h"
 
 using namespace std;
 
@@ -79,7 +80,7 @@ int main()
                 players[0] = new Pyramid_Player<char>(player1, symbol);
                 break;
             case '2':
-                symbol = (rand() % 2 ? 'X' : 'O');
+                symbol = rand() % 2 ? 'X' : 'O';
                 players[0] = new Pyramid_Random_Player<char>(symbol);
                 break;
             default:
@@ -134,7 +135,7 @@ int main()
                 players[0] = new HumanPlayer<char>(player1, symbol);
                 break;
             case '2':
-                symbol = (rand() % 2 ? 'X' : 'O');
+                symbol = rand() % 2 ? 'X' : 'O';
                 players[0] = new ComputerPlayer<char>(symbol);
                 break;
             default:
@@ -226,7 +227,7 @@ int main()
                 players[1] = new Inverted_X_O_Player<char>(player1, symbol);
                 break;
             case '2':
-                symbol = (rand() % 2 ? 'X' : 'O');
+                symbol = rand() % 2 ? 'X' : 'O';
                 players[1] = new Inverted_X_O_Random_Player<char>(symbol);
                 break;
             default:
@@ -281,7 +282,7 @@ int main()
                 players[0] = new fourPlayer<char>(player1, symbol);
                 break;
             case '2':
-                symbol = (rand() % 2 ? 'X' : 'O');
+                symbol = rand() % 2 ? 'X' : 'O';
                 players[0] = new random_fourPlayer<char>(symbol);
                 break;
             default:
@@ -336,7 +337,7 @@ int main()
                 players[0] = new ultimate_tic_tac_toe_player<char>(player1, symbol);
                 break;
             case '2':
-                symbol = (rand() % 2 ? 'X' : 'O');
+                symbol = rand() % 2 ? 'X' : 'O';
                 players[0] = new ultimate_tic_tac_toe_random_player<char>(symbol);
                 break;
             default:
@@ -359,8 +360,50 @@ int main()
                 cout << "Enter a valid input (1 or 2).";
             }
             break;
-        case '3':
         case '5':
+            Board = new numericalTicTacToeBoard<char>();
+            Board->display_board();
+            cout << "Choose type: \n1. Human\n2. Random Player\n=> ";
+            cin >> type;
+            while (type != '1' && type != '2')
+            {
+                cout << "Enter a valid input: ";
+                cin.ignore();
+                cin.clear();
+                cin >> type;
+            }
+            switch (type)
+            {
+            case '1':
+                cout << "Enter player 1's name: ";
+                cin.ignore();
+                getline(cin, player1);
+                players[0] = new humanPlayer<char>(player1, ' ');
+                break;
+            case '2':
+                players[0] = new randomPlayer<char>(' ');
+                break;
+            default:
+                cout << "Enter a valid input (1 or 2).";
+            }
+            cout << "Choose type: \n1. Human\n2. Random Player\n=> ";
+            cin >> type;
+            switch (type)
+            {
+            case '1':
+                cout << "Enter player 2's name: ";
+                cin.ignore();
+                getline(cin, player2);
+                players[1] = new humanPlayer<char>(player2, ' ');
+                break;
+            case '2':
+                players[1] = new randomPlayer<char>(' ');
+                break;
+            default:
+                cout << "Enter a valid input (1 or 2).";
+            }
+            break;
+        case '3':
             Board = nullptr;
             players[0] = nullptr;
             players[1] = nullptr;
