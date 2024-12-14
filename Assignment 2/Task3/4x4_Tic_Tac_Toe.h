@@ -4,6 +4,8 @@
 #include "BoardGame_Classes.h"
 #include <random>
 
+inline char dir;
+
 template <class T>
 class fourBoard : public Board<T>
 {
@@ -84,46 +86,14 @@ void fourBoard<T>::display_board()
 template <class T>
 bool fourBoard<T>::update_board(int x, int y, T symbol)
 {
-    if (this->board[x][y] != symbol)
+    if (this->board[x][y] == symbol && (dir == '1' && x - 1 >= 0 || dir == '2' && x + 1 < this->rows || dir == '3' && y - 1
+        >= 0 || dir == '4' && y + 1 < this->columns) && (x >= 0 && y >= 0 && x < this->rows && y < this->columns) && ((
+            dir
+            == '4' && this->board[x][y + 1] == ' ') ||
+        (dir == '3' && this->board[x][y - 1] == ' ') ||
+        (dir == '2' && this->board[x + 1][y] == ' ') ||
+        (dir == '1' && this->board[x - 1][y] == ' ')))
     {
-        cout << "Choose a cell containing \'" << symbol << "\'\n";
-        return false;
-    }
-    if (x >= 0 && y >= 0 && x < this->rows && y < this->columns)
-    {
-        char dir;
-        cout << "Enter the direction:"
-            "\n1. Up"
-            "\n2. Down"
-            "\n3. Left"
-            "\n4. Right"
-            "\n=> ";
-        cin >> dir;
-        while (dir != '1' && dir != '2' && dir != '3' && dir != '4')
-        {
-            cout << "Enter a valid input: ";
-            cin.ignore();
-            cin.clear();
-            cin >> dir;
-        }
-
-        while (dir == '1' && x - 1 < 0 || dir == '2' && x + 1 >= this->rows || dir == '3' && y - 1 < 0 || dir == '4' &&
-            y + 1 >= this->columns)
-        {
-            cout << "You're going outside the board.\nEnter another direction: ";
-            cin >> dir;
-        }
-
-        while (
-            dir == '4' && this->board[x][y + 1] != ' ' ||
-            dir == '3' && this->board[x][y - 1] != ' ' ||
-            dir == '2' && this->board[x + 1][y] != ' ' ||
-            dir == '1' && this->board[x - 1][y] != ' ')
-        {
-            cout << "You can't step into a played cell.\nEnter another direction: ";
-            cin >> dir;
-        }
-
         this->board[x][y] = ' ';
         if (dir == '4')
         {
@@ -142,8 +112,9 @@ bool fourBoard<T>::update_board(int x, int y, T symbol)
             x++;
         }
         this->board[x][y] = symbol;
+        return true;
     }
-    return true;
+    return false;
 }
 
 template <class T>
@@ -208,6 +179,8 @@ void fourPlayer<T>::getmove(int& x, int& y)
             cout << "Enter integers: ";
         }
     }
+    cout << "Enter the direction:\n1. Up\n2. Down\n3. Left\n4. Right\n=> ";
+    cin >> dir;
 }
 
 template <class T>
@@ -223,6 +196,8 @@ void random_fourPlayer<T>::getmove(int& x, int& y)
     uniform_int_distribution coordinates(0, 3);
     x = coordinates(gen);
     y = coordinates(gen);
+    uniform_int_distribution direction('1', '4');
+    dir = direction(gen);
     cout << '(' << x << ", " << y << ')' << '\n';
 }
 
