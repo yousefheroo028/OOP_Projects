@@ -106,12 +106,14 @@ bool fourBoard<T>::update_board(int x, int y, T symbol)
             cin.clear();
             cin >> dir;
         }
+
         while (dir == '1' && x - 1 < 0 || dir == '2' && x + 1 >= this->rows || dir == '3' && y - 1 < 0 || dir == '4' &&
             y + 1 >= this->columns)
         {
             cout << "You're going outside the board.\nEnter another direction: ";
             cin >> dir;
         }
+
         while (
             dir == '4' && this->board[x][y + 1] != ' ' ||
             dir == '3' && this->board[x][y - 1] != ' ' ||
@@ -121,24 +123,22 @@ bool fourBoard<T>::update_board(int x, int y, T symbol)
             cout << "You can't step into a played cell.\nEnter another direction: ";
             cin >> dir;
         }
+
+        this->board[x][y] = ' ';
         if (dir == '4')
         {
-            this->board[x][y] = ' ';
             y++;
         }
         else if (dir == '3')
         {
-            this->board[x][y] = ' ';
             y--;
         }
         else if (dir == '1')
         {
-            this->board[x][y] = ' ';
             x--;
         }
         else if (dir == '2')
         {
-            this->board[x][y] = ' ';
             x++;
         }
         this->board[x][y] = symbol;
