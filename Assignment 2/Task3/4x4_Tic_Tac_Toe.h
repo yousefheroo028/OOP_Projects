@@ -186,6 +186,8 @@ void fourPlayer<T>::getmove(int& x, int& y)
 template <class T>
 random_fourPlayer<T>::random_fourPlayer(T symbol): RandomPlayer<T>(symbol)
 {
+    this->name += ' ';
+    this->name += symbol;
 }
 
 template <class T>
@@ -198,7 +200,6 @@ void random_fourPlayer<T>::getmove(int& x, int& y)
     y = coordinates(gen);
     uniform_int_distribution direction('1', '4');
     dir = direction(gen);
-    cout << '(' << x << ", " << y << ')' << '\n';
 }
 
 #endif

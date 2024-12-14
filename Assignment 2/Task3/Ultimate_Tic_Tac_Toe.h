@@ -149,63 +149,53 @@ bool ultimate_tic_tac_toe_board<T>::is_win()
 template <class T>
 bool ultimate_tic_tac_toe_board<T>::update_board(int x, int y, T symbol)
 {
-    if (this->final_board[x / 3][y / 3] != ' ')
+    if (this->final_board[x / 3][y / 3] == ' ' && !(x < 0 || x >= this->rows || y < 0 || y >= this->columns) && (this->
+        board[x][y] == ' '))
     {
-        cout << "You can't play here again.\n";
-        return false;
-    }
-    if (x < 0 || x >= this->rows || y < 0 || y >= this->columns)
-    {
-        cout << "\r\rYou're going outside the board.\n";
-        return false;
-    }
-    if (this->board[x][y] != ' ')
-    {
-        cout << "\r\rYou can't play on a played cell.\n";
-        return false;
-    }
-    ++this->n_moves;
-    this->board[x][y] = symbol;
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = 0; j < 3; j++)
+        ++this->n_moves;
+        this->board[x][y] = symbol;
+        for (int i = 0; i < 3; i++)
         {
-            for (int k = 0; k < 3; k++)
+            for (int j = 0; j < 3; j++)
             {
-                // Check rows
-                if (this->board[k + 3 * i][3 * j] == this->board[k + 3 * i][1 + 3 * j] &&
-                    this->board[k + 3 * i][1 + 3 * j] == this->board[k + 3 * i][2 + 3 * j] &&
-                    this->board[k + 3 * i][3 * j] != ' ')
+                for (int k = 0; k < 3; k++)
                 {
-                    if (this->final_board[i][j] == ' ') this->final_board[i][j] = this->board[k + 3 * i][3 * j];
-                }
+                    // Check rows
+                    if (this->board[k + 3 * i][3 * j] == this->board[k + 3 * i][1 + 3 * j] &&
+                        this->board[k + 3 * i][1 + 3 * j] == this->board[k + 3 * i][2 + 3 * j] &&
+                        this->board[k + 3 * i][3 * j] != ' ')
+                    {
+                        if (this->final_board[i][j] == ' ') this->final_board[i][j] = this->board[k + 3 * i][3 * j];
+                    }
 
-                // Check columns
-                if (this->board[3 * j][k + 3 * i] == this->board[1 + 3 * j][k + 3 * i] &&
-                    this->board[1 + 3 * j][k + 3 * i] == this->board[2 + 3 * j][k + 3 * i] &&
-                    this->board[3 * j][k + 3 * i] != ' ')
-                {
-                    if (this->final_board[j][i] == ' ') this->final_board[j][i] = this->board[3 * j][k + 3 * i];
-                }
+                    // Check columns
+                    if (this->board[3 * j][k + 3 * i] == this->board[1 + 3 * j][k + 3 * i] &&
+                        this->board[1 + 3 * j][k + 3 * i] == this->board[2 + 3 * j][k + 3 * i] &&
+                        this->board[3 * j][k + 3 * i] != ' ')
+                    {
+                        if (this->final_board[j][i] == ' ') this->final_board[j][i] = this->board[3 * j][k + 3 * i];
+                    }
 
-                // Check diagonals
-                if (this->board[3 * i][3 * j] == this->board[3 * i + 1][3 * j + 1] &&
-                    this->board[3 * i + 1][3 * j + 1] == this->board[3 * i + 2][3 * j + 2] &&
-                    this->board[3 * i][3 * j] != ' ')
-                {
-                    if (this->final_board[i][j] == ' ') this->final_board[i][j] = this->board[3 * i][3 * j];
-                }
+                    // Check diagonals
+                    if (this->board[3 * i][3 * j] == this->board[3 * i + 1][3 * j + 1] &&
+                        this->board[3 * i + 1][3 * j + 1] == this->board[3 * i + 2][3 * j + 2] &&
+                        this->board[3 * i][3 * j] != ' ')
+                    {
+                        if (this->final_board[i][j] == ' ') this->final_board[i][j] = this->board[3 * i][3 * j];
+                    }
 
-                if (this->board[3 * i][3 * j + 2] == this->board[3 * i + 1][3 * j + 1] &&
-                    this->board[3 * i + 1][3 * j + 1] == this->board[3 * i + 2][3 * j] &&
-                    this->board[3 * i][3 * j + 2] != ' ')
-                {
-                    if (this->final_board[i][j] == ' ') this->final_board[i][j] = this->board[3 * i][3 * j + 2];
+                    if (this->board[3 * i][3 * j + 2] == this->board[3 * i + 1][3 * j + 1] &&
+                        this->board[3 * i + 1][3 * j + 1] == this->board[3 * i + 2][3 * j] &&
+                        this->board[3 * i][3 * j + 2] != ' ')
+                    {
+                        if (this->final_board[i][j] == ' ') this->final_board[i][j] = this->board[3 * i][3 * j + 2];
+                    }
                 }
             }
         }
+        return true;
     }
-    return true;
+    return false;
 }
 
 template <class T>

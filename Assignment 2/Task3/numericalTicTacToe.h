@@ -50,7 +50,7 @@ public:
 
     void display_board() override
     {
-        // system("cls");
+        system("cls");
         cout << "\nCurrent Board:\n";
         for (int i = 0; i < this->rows; ++i)
         {

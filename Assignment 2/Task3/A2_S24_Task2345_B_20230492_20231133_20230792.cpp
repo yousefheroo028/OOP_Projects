@@ -7,6 +7,7 @@
 #include "Connect_4.h"
 #include "Ultimate_Tic_Tac_Toe.h"
 #include "numericalTicTacToe.h"
+#include "5x5_X_O.h"
 
 using namespace std;
 
@@ -33,7 +34,7 @@ int main()
             gameOPT != '4' && gameOPT != '5' && gameOPT != '6' &&
             gameOPT != '7' && gameOPT != '8')
         {
-            cout << "Enter a valid input: ";
+            cout << "Enter a number between [0, 8]: ";
             cin.ignore();
             cin.clear();
             cin >> gameOPT;
@@ -44,9 +45,6 @@ int main()
         case '0':
             cout << "Thanks for choosing our games.";
             cout << endl, system("pause");
-            free(Board);
-            free(players[0]);
-            free(players[1]);
             return 0;
         case '1':
             Board = new Pyramid_Board<char>();
@@ -158,6 +156,52 @@ int main()
                 cout << "Enter a valid input (1 or 2).";
             }
             break;
+        case '3':
+            Board = new five_X_O_Board<char>();
+            Board->display_board();
+            cout << "Choose type: \n1. Human\n2. Random Player\n=> ";
+            cin >> type;
+            while (type != '1' && type != '2')
+            {
+                cout << "Enter a valid input: ";
+                cin.ignore();
+                cin.clear();
+                cin >> type;
+            }
+            switch (type)
+            {
+            case '1':
+                cout << "Enter player 1's name: ";
+                cin.ignore();
+                getline(cin, player1);
+                cout << "Choose the symbol (X or O): ";
+                cin >> symbol;
+                players[0] = new five_X_O_Player<char>(player1, symbol);
+                break;
+            case '2':
+                symbol = rand() % 2 ? 'X' : 'O';
+                players[0] = new five_X_O_Random_Player<char>(symbol);
+                break;
+            default:
+                cout << "Enter a valid input (1 or 2).";
+            }
+            cout << "Choose type: \n1. Human\n2. Random Player\n=> ";
+            cin >> type;
+            switch (type)
+            {
+            case '1':
+                cout << "Enter player 2's name: ";
+                cin.ignore();
+                getline(cin, player2);
+                players[1] = new five_X_O_Player<char>(player2, symbol == 'X' ? 'O' : 'X');
+                break;
+            case '2':
+                players[1] = new five_X_O_Random_Player<char>(symbol == 'X' ? 'O' : 'X');
+                break;
+            default:
+                cout << "Enter a valid input (1 or 2).";
+            }
+            break;
         case '4':
             Board = new Word_Board<char>();
             Board->display_board();
@@ -193,6 +237,49 @@ int main()
             else if (type == '2')
             {
                 players[1] = new Word_Random_Player<char>(' ');
+            }
+            break;
+        case '5':
+            Board = new numericalTicTacToeBoard<char>();
+            Board->display_board();
+            cout << "Choose type: \n1. Human\n2. Random Player\n=> ";
+            cin >> type;
+            while (type != '1' && type != '2')
+            {
+                cout << "Enter a valid input: ";
+                cin.ignore();
+                cin.clear();
+                cin >> type;
+            }
+            switch (type)
+            {
+            case '1':
+                cout << "Enter player 1's name: ";
+                cin.ignore();
+                getline(cin, player1);
+                players[0] = new humanPlayer<char>(player1, ' ');
+                break;
+            case '2':
+                players[0] = new randomPlayer<char>(' ');
+                break;
+            default:
+                cout << "Enter a valid input (1 or 2).";
+            }
+            cout << "Choose type: \n1. Human\n2. Random Player\n=> ";
+            cin >> type;
+            switch (type)
+            {
+            case '1':
+                cout << "Enter player 2's name: ";
+                cin.ignore();
+                getline(cin, player2);
+                players[1] = new humanPlayer<char>(player2, ' ');
+                break;
+            case '2':
+                players[1] = new randomPlayer<char>(' ');
+                break;
+            default:
+                cout << "Enter a valid input (1 or 2).";
             }
             break;
         case '6':
@@ -360,55 +447,6 @@ int main()
                 cout << "Enter a valid input (1 or 2).";
             }
             break;
-        case '5':
-            Board = new numericalTicTacToeBoard<char>();
-            Board->display_board();
-            cout << "Choose type: \n1. Human\n2. Random Player\n=> ";
-            cin >> type;
-            while (type != '1' && type != '2')
-            {
-                cout << "Enter a valid input: ";
-                cin.ignore();
-                cin.clear();
-                cin >> type;
-            }
-            switch (type)
-            {
-            case '1':
-                cout << "Enter player 1's name: ";
-                cin.ignore();
-                getline(cin, player1);
-                players[0] = new humanPlayer<char>(player1, ' ');
-                break;
-            case '2':
-                players[0] = new randomPlayer<char>(' ');
-                break;
-            default:
-                cout << "Enter a valid input (1 or 2).";
-            }
-            cout << "Choose type: \n1. Human\n2. Random Player\n=> ";
-            cin >> type;
-            switch (type)
-            {
-            case '1':
-                cout << "Enter player 2's name: ";
-                cin.ignore();
-                getline(cin, player2);
-                players[1] = new humanPlayer<char>(player2, ' ');
-                break;
-            case '2':
-                players[1] = new randomPlayer<char>(' ');
-                break;
-            default:
-                cout << "Enter a valid input (1 or 2).";
-            }
-            break;
-        case '3':
-            Board = nullptr;
-            players[0] = nullptr;
-            players[1] = nullptr;
-            cout << "In progress...";
-            break;
         default:
             break;
         }
@@ -416,6 +454,12 @@ int main()
         {
             GameManager<char> Game(Board, players);
             Game.run();
+        }
+        else
+        {
+            delete Board;
+            delete players[0];
+            delete players[1];
         }
         cout << endl, system("pause");
     }
