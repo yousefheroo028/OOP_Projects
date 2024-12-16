@@ -3,10 +3,11 @@
 
 #include "BoardGame_Classes.h"
 
+inline int step_counter = 0;
+
 template <class T>
 class ultimate_tic_tac_toe_board : public Board<T>
 {
-protected:
     vector<vector<T>> final_board;
 
 public:
@@ -36,7 +37,7 @@ template <class T>
 class ultimate_tic_tac_toe_random_player : public RandomPlayer<T>
 {
 public:
-    ultimate_tic_tac_toe_random_player(T symbol);
+    explicit ultimate_tic_tac_toe_random_player(T symbol);
 
     void getmove(int& x, int& y) override;
 };
@@ -44,6 +45,7 @@ public:
 template <class T>
 ultimate_tic_tac_toe_board<T>::ultimate_tic_tac_toe_board()
 {
+    step_counter = 0;
     final_board = vector<vector<T>>(3, vector<T>(3, ' '));
     this->columns = this->rows = 9;
     this->n_moves = 0;
@@ -106,7 +108,7 @@ void ultimate_tic_tac_toe_board<T>::display_board()
 template <class T>
 bool ultimate_tic_tac_toe_board<T>::is_draw()
 {
-    return this->n_moves == 81 && !this->is_win();
+    return !this->is_win() && this->n_moves == 81;
 }
 
 template <class T>
@@ -149,8 +151,9 @@ bool ultimate_tic_tac_toe_board<T>::is_win()
 template <class T>
 bool ultimate_tic_tac_toe_board<T>::update_board(int x, int y, T symbol)
 {
-    if (this->final_board[x / 3][y / 3] == ' ' && !(x < 0 || x >= this->rows || y < 0 || y >= this->columns) && (this->
-        board[x][y] == ' '))
+    if (this->final_board[x / 3][y / 3] == ' ' &&
+        !(x < 0 || x >= this->rows || y < 0 || y >= this->columns) &&
+        this->board[x][y] == ' ')
     {
         ++this->n_moves;
         this->board[x][y] = symbol;
@@ -165,7 +168,10 @@ bool ultimate_tic_tac_toe_board<T>::update_board(int x, int y, T symbol)
                         this->board[k + 3 * i][1 + 3 * j] == this->board[k + 3 * i][2 + 3 * j] &&
                         this->board[k + 3 * i][3 * j] != ' ')
                     {
-                        if (this->final_board[i][j] == ' ') this->final_board[i][j] = this->board[k + 3 * i][3 * j];
+                        if (this->final_board[i][j] == ' ')
+                        {
+                            this->final_board[i][j] = this->board[k + 3 * i][3 * j];
+                        }
                     }
 
                     // Check columns
@@ -173,7 +179,10 @@ bool ultimate_tic_tac_toe_board<T>::update_board(int x, int y, T symbol)
                         this->board[1 + 3 * j][k + 3 * i] == this->board[2 + 3 * j][k + 3 * i] &&
                         this->board[3 * j][k + 3 * i] != ' ')
                     {
-                        if (this->final_board[j][i] == ' ') this->final_board[j][i] = this->board[3 * j][k + 3 * i];
+                        if (this->final_board[j][i] == ' ')
+                        {
+                            this->final_board[j][i] = this->board[3 * j][k + 3 * i];
+                        }
                     }
 
                     // Check diagonals
@@ -181,14 +190,20 @@ bool ultimate_tic_tac_toe_board<T>::update_board(int x, int y, T symbol)
                         this->board[3 * i + 1][3 * j + 1] == this->board[3 * i + 2][3 * j + 2] &&
                         this->board[3 * i][3 * j] != ' ')
                     {
-                        if (this->final_board[i][j] == ' ') this->final_board[i][j] = this->board[3 * i][3 * j];
+                        if (this->final_board[i][j] == ' ')
+                        {
+                            this->final_board[i][j] = this->board[3 * i][3 * j];
+                        }
                     }
 
                     if (this->board[3 * i][3 * j + 2] == this->board[3 * i + 1][3 * j + 1] &&
                         this->board[3 * i + 1][3 * j + 1] == this->board[3 * i + 2][3 * j] &&
                         this->board[3 * i][3 * j + 2] != ' ')
                     {
-                        if (this->final_board[i][j] == ' ') this->final_board[i][j] = this->board[3 * i][3 * j + 2];
+                        if (this->final_board[i][j] == ' ')
+                        {
+                            this->final_board[i][j] = this->board[3 * i][3 * j + 2];
+                        }
                     }
                 }
             }
@@ -217,11 +232,9 @@ void ultimate_tic_tac_toe_player<T>::getmove(int& x, int& y)
             x = a - '0', y = b - '0';
             break;
         }
-        else
-        {
-            cout << "Enter integers: ";
-        }
+        cout << "Enter integers: ";
     }
+    ++step_counter;
 }
 
 template <class T>
@@ -239,6 +252,7 @@ void ultimate_tic_tac_toe_random_player<T>::getmove(int& x, int& y)
     uniform_int_distribution coordinates(0, 8);
     x = coordinates(gen);
     y = coordinates(gen);
+    ++step_counter;
 }
 
 #endif

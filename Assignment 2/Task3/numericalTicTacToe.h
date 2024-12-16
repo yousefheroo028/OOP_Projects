@@ -4,6 +4,7 @@
 #include "BoardGame_Classes.h"
 #include <iostream>
 #include <algorithm>
+#include <ranges>
 #include <random>
 
 inline bool turn_flipper = true;
@@ -40,7 +41,7 @@ public:
         {
             available_numbers = !turn_flipper ? &available_even_numbers : &available_odd_numbers;
             this->board[x][y] = symbol;
-            available_numbers->erase(ranges::find(*available_numbers, symbol - '0'));
+            available_numbers->erase(find(available_numbers->begin(), available_numbers->end(), symbol - '0'));
             ++this->n_moves;
             turn_flipper = !turn_flipper;
             return true;
@@ -127,7 +128,7 @@ public:
             cout << "Choose an existing number: ";
             int num;
             cin >> num;
-            if (ranges::find(*available_numbers, num) != available_numbers->end())
+            if (find(available_numbers->begin(), available_numbers->end(), num) != available_numbers->end())
             {
                 // Remove the number from available_numbers
                 this->symbol = num + '0';
@@ -168,7 +169,8 @@ public:
         {
             uniform_int_distribution<> index(0, available_numbers->size() - 1);
             int i = index(gen);
-            if (ranges::find(*available_numbers, available_numbers->at(i)) != available_numbers->end())
+            if (find(available_numbers->begin(), available_numbers->end(), available_numbers->at(i)) !=
+                available_numbers->end())
                 this->symbol = available_numbers->at(i) + '0';
         }
     }

@@ -37,13 +37,12 @@ class five_X_O_Random_Player : public RandomPlayer<T>
 {
 public:
     five_X_O_Random_Player(T symbol);
-    void getmove(int& x, int& y);
+    void getmove(int& x, int& y) override;
 };
 
 // ------------------- IMPLEMENTATION -------------------
 
 #include <iostream>
-#include <iomanip>
 #include <cctype>  // for toupper()
 
 using namespace std;
@@ -126,28 +125,28 @@ int five_X_O_Board<T>::checkDiagonals(T symbol)
 }
 
 template <typename T>
-bool five_X_O_Board<T>::update_board(int x, int y, T mark)
+bool five_X_O_Board<T>::update_board(int x, int y, T symbol)
 {
     // Only update if move is valid
     system("cls");
-    if (!(x < 0 || x >= this->rows || y < 0 || y >= this->columns) && (this->board[x][y] == 0 || mark == 0))
+    if (!(x < 0 || x >= this->rows || y < 0 || y >= this->columns) && (this->board[x][y] == 0 || symbol == 0))
     {
         if (x == 0 && y == 4)
         {
             return false;
         }
-        if (mark == 0)
+        if (symbol == 0)
         {
-            this->n_moves--;
+            --this->n_moves;
             this->board[x][y] = 0;
         }
         else
         {
-            this->n_moves++;
-            this->board[x][y] = toupper(mark);
+            ++this->n_moves;
+            this->board[x][y] = toupper(symbol);
         }
-        if (mark == 'X')counterX = countSequence('X');
-        else if (mark == 'O')counterO = countSequence('O');
+        if (symbol == 'X')counterX = countSequence('X');
+        else if (symbol == 'O')counterO = countSequence('O');
         return true;
     }
     return false;
@@ -157,26 +156,40 @@ bool five_X_O_Board<T>::update_board(int x, int y, T mark)
 template <typename T>
 void five_X_O_Board<T>::display_board()
 {
-    for (int i = 0; i < this->rows; i++)
+    system("cls");
+    for (int i = 0; i < this->rows; ++i)
     {
-        cout << "\n| ";
-        for (int j = 0; j < this->columns; j++)
+        cout << ' ';
+        for (int j = 0; j < this->columns; ++j)
         {
-            cout << "(" << i << "," << j << ")";
-            cout << setw(2) << this->board[i][j] << " |";
+            if (i == 0 && j == 4) continue;
+            if (this->board[i][j] != 0) cout << "  " << this->board[i][j] << "   ";
+            else cout << '(' << i << ", " << j << ')';
+            if (j < this->columns - 1) cout << " | ";
         }
-        cout << "\n-----------------------------";
+        if (i < this->rows - 1) cout << "\n--------------------------------------------\n";
     }
-    cout << endl;
+    cout << '\n';
+    cout << "\nX counts: " << this->counterX << '\n' << "O counts: " << this->counterO << '\n';
+    cout << '\n';
 }
 
 // Returns true if there is any winner
 template <typename T>
 bool five_X_O_Board<T>::is_win()
 {
-    if (this->counterX > this->counterO && this->n_moves == 24)
+    if (this->n_moves == 24)
     {
-        return true;
+        if (this->counterX > this->counterO)
+        {
+            cout << "X wins!\n";
+            return true;
+        }
+        if (this->counterX < this->counterO)
+        {
+            cout << "O wins!\n";
+            return true;
+        }
     }
     return false;
 }
@@ -218,8 +231,9 @@ template <typename T>
 five_X_O_Random_Player<T>::five_X_O_Random_Player(T symbol) : RandomPlayer<T>(symbol)
 {
     this->dimension = 5;
-    this->name = "Random Computer Player";
-    srand(static_cast<unsigned int>(time(0))); // Seed the random number generator
+    this->name = "Random Computer Player ";
+    this->name += this->symbol;
+    srand(static_cast<unsigned int>(time(nullptr))); // Seed the random number generator
 }
 
 template <typename T>
