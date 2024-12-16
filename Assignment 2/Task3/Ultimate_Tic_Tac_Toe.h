@@ -9,6 +9,7 @@ template <class T>
 class ultimate_tic_tac_toe_board : public Board<T>
 {
     vector<vector<T>> final_board;
+    int fail_counter = 0;
 
 public:
     ultimate_tic_tac_toe_board();
@@ -108,7 +109,7 @@ void ultimate_tic_tac_toe_board<T>::display_board()
 template <class T>
 bool ultimate_tic_tac_toe_board<T>::is_draw()
 {
-    return !this->is_win() && this->n_moves == 81;
+    return !this->is_win() && this->n_moves == 81 || this->fail_counter >= 81;
 }
 
 template <class T>
@@ -208,8 +209,10 @@ bool ultimate_tic_tac_toe_board<T>::update_board(int x, int y, T symbol)
                 }
             }
         }
+        this->fail_counter = 0;
         return true;
     }
+    ++this->fail_counter;
     return false;
 }
 
